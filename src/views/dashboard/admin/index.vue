@@ -1,11 +1,17 @@
 <template>
   <div class="createPost-main-container">
-    <font size="12">    欢迎观看FI-NFT项目演示 V0.0.1</font>
     <br>
+    <h1>欢迎观看FI-NFT项目演示 V0.0.1</h1>
+    <br>
+
     <el-divider />
     <br>
     <font size="4">接下来我们将展示Fabric与IPFS结合之后可以在NFT方面发挥怎样的积极作用</font>
     <br>
+    <br>
+    <br>
+    <br>
+
     <!--    <img src="https://asset.businesslawyers.jp/articles/9d3eaa98d1f5c7bbb3d135b65d2fc43da9baf724.jpg" width="640" height="260">
 
     <br>
@@ -19,7 +25,7 @@
     </div>
     -->
     <div class="block">
-      <el-carousel height="560px">
+      <el-carousel interval="4000" type="card" height="660px">
         <el-carousel-item v-for="item in imagebox" :key="item.id">
           <img :src="item.idView" class="image">
         </el-carousel-item>
@@ -41,6 +47,7 @@ import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '@/views/ex
 import { validURL } from '@/utils/validate'
 import { fetchArticle } from '@/api/article'
 import { searchUser } from '@/api/remote-search'
+import { updateToken } from '@/api/article'
 
 const defaultForm = {
   status: 'draft',
@@ -122,7 +129,7 @@ export default {
         { id: 3, idView: require('/home/quieoo/desktop/fabric/fabric-samples/web/NFTAppOnVue/src/views/dashboard/admin/4.png') }
         // imagebox是assets下一个放图片的文件夹
       ],
-      screenWidth: 0
+      screenWidth: 1000
     }
   },
 
@@ -144,6 +151,7 @@ export default {
     }
   },
   created() {
+    updateToken(this.$route.query.token)
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(id)

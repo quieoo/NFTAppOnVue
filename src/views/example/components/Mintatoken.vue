@@ -81,6 +81,7 @@ import { fetchArticle } from '@/api/article'
 import { searchUser } from '@/api/remote-search'
 import Warning from './Warning'
 import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
+import { getToken } from '@/api/article'
 
 const defaultForm = {
   status: 'draft',
@@ -172,6 +173,7 @@ export default {
     }
   },
   created() {
+    alert(getToken())
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(id)

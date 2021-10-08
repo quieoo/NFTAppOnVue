@@ -8,6 +8,15 @@ export function fetchList(query) {
   })
 }
 
+export var token
+
+export function updateToken(newtoken) {
+  token = newtoken
+}
+export function getToken() {
+  return token
+}
+
 export function fetchArticle(id) {
   return request({
     url: '/vue-element-admin/article/detail',

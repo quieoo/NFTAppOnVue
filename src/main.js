@@ -1,7 +1,8 @@
 import Vue from 'vue'
 
 import Cookies from 'js-cookie'
-
+import axios from 'axios'
+Vue.prototype.$axios = axios
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 
 import Element from 'element-ui'

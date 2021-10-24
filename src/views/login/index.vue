@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">欢迎来到IF-NFT,请登录或注册</h3>
       </div>
 
       <el-form-item prop="username">
@@ -13,14 +13,13 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="token"
+          placeholder="用户名"
           name="username"
           type="text"
           tabindex="1"
           autocomplete="on"
         />
       </el-form-item>
-      <!--
       <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
         <el-form-item prop="password">
           <span class="svg-container">
@@ -44,9 +43,12 @@
           </span>
         </el-form-item>
       </el-tooltip>
--->
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
-    </el-form>
+      <el-container>
+        <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+        <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleRegister">注册</el-button>
+      </el-container>
+
+    </el-form>·
 
     <el-dialog title="Or connect with" :visible.sync="showDialog">
       Can not be simulated on local, so please combine you own business simulation! ! !
@@ -61,6 +63,7 @@
 <script>
 import { validUsername } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
+import { updateClientID } from '@/api/article'
 
 export default {
   name: 'Login',
@@ -139,16 +142,52 @@ export default {
       })
     },
     handleLogin() {
-      this.loading = true
-      this.$store.dispatch('user/login', this.loginForm)
-        .then(() => {
-          this.$router.push({ path: this.redirect || '/', query: { token: this.loginForm.username }})
-          // this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-          this.loading = false
-        })
-        .catch(() => {
-          this.loading = false
-        })
+      const params = new URLSearchParams()
+      params.append('clientID', this.loginForm.username)
+      this.$axios({
+        method: 'post',
+        url: 'api/login',
+        params
+      }).then((res) => {
+        alert('登录成功')
+        updateClientID(this.loginForm.username)
+        this.loading = true
+        this.$store.dispatch('user/login', this.loginForm)
+          .then(() => {
+            this.$router.push({ path: this.redirect || '/', query: { token: this.loginForm.username }})
+            // this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+            this.loading = false
+          })
+          .catch(() => {
+            this.loading = false
+          })
+      }).catch((err) => {
+        alert(err)
+      })
+    },
+    handleRegister() {
+      const params = new URLSearchParams()
+      params.append('clientID', this.loginForm.username)
+      this.$axios({
+        method: 'post',
+        url: 'api/register',
+        params
+      }).then((res) => {
+        alert('注册成功')
+        updateClientID(this.loginForm.username)
+        this.loading = true
+        this.$store.dispatch('user/login', this.loginForm)
+          .then(() => {
+            this.$router.push({ path: this.redirect || '/', query: { token: this.loginForm.username }})
+            // this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+            this.loading = false
+          })
+          .catch(() => {
+            this.loading = false
+          })
+      }).catch((err) => {
+        alert(err + ': register failed! ')
+      })
     },
     getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {

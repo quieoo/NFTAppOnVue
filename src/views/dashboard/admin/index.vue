@@ -47,7 +47,6 @@ import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '@/views/ex
 import { validURL } from '@/utils/validate'
 import { fetchArticle } from '@/api/article'
 import { searchUser } from '@/api/remote-search'
-import { updateToken } from '@/api/article'
 
 const defaultForm = {
   status: 'draft',
@@ -151,7 +150,6 @@ export default {
     }
   },
   created() {
-    updateToken(this.$route.query.token)
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(id)

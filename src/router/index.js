@@ -127,6 +127,18 @@ export const asyncRoutes = [
         component: () => import('@/views/example/request'),
         name: 'CreateArticle',
         meta: { title: 'Request a Token', icon: 'edit' }
+      },
+      {
+        path: 'auction',
+        component: () => import('@/views/example/auction'),
+        name: 'Auction',
+        meta: { title: 'Auction try', icon: 'edit' }
+      },
+      {
+        path: 'publish',
+        component: () => import('@/views/example/pub'),
+        name: 'CreateArticle',
+        meta: { title: '我的资产', icon: 'edit' }
       }
 
     ]

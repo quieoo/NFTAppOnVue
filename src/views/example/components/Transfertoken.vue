@@ -3,9 +3,7 @@
     <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
 
       <sticky :z-index="10" :class-name="'sub-navbar '+postForm.status">
-        <el-button v-loading="loading" type="warning" @click="draftForm">
-          @Account1
-        </el-button>
+        <el-button v-loading="loading" type="info" @click="showClient">@{{ clientID }}</el-button>
       </sticky>
 
       <div class="createPost-main-container">
@@ -23,7 +21,7 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item style="margin-bottom: 40px;" label-width="70px" label="TokenID:">
-                    <el-input v-model="postForm.content_short" :rows="1" type="textarea" class="article-textarea" autosize placeholder="Please enter the tokenID" />
+                    <el-input v-model="tokenID" :rows="1" type="textarea" class="article-textarea" autosize placeholder="Please enter the tokenID" />
                   </el-form-item>
 
                 </el-col>
@@ -33,7 +31,7 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item style="margin-bottom: 40px;" label-width="70px" label="AccountID:">
-                    <el-input v-model="postForm.title" :rows="1" type="textarea" class="article-textarea" autosize placeholder="Please enter the base64-encoded target accountID" />
+                    <el-input v-model="accountID" :rows="1" type="textarea" class="article-textarea" autosize placeholder="Please enter the base64-encoded target accountID" />
                   </el-form-item>
 
                 </el-col>
@@ -82,7 +80,7 @@ import Upload from '@/components/Upload/SingleImage3'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { validURL } from '@/utils/validate'
-import { fetchArticle } from '@/api/article'
+import { fetchArticle, getClientID, getOrg } from '@/api/article'
 import { searchUser } from '@/api/remote-search'
 import Warning from './Warning'
 import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
@@ -156,7 +154,10 @@ export default {
       }],
       fits: ['fill'],
       url: 'C:\\Users\\81433\\Desktop\\PICTURE\\p.webp',
-      emptyGif: 'https://wpimg.wallstcn.com/0e03b7da-db9e-4819-ba10-9016ddfdaed3'
+      emptyGif: 'https://wpimg.wallstcn.com/0e03b7da-db9e-4819-ba10-9016ddfdaed3',
+      clientID: getClientID(),
+      accountID: '',
+      tokenID: ''
     }
   },
   computed: {
@@ -188,6 +189,20 @@ export default {
     this.tempRoute = Object.assign({}, this.$route)
   },
   methods: {
+    showClient() {
+      const params = new URLSearchParams()
+      params.append('clientID', this.clientID)
+      params.append('org', getOrg())
+      this.$axios({
+        method: 'post',
+        url: '/api/account',
+        params
+      }).then((result) => {
+        alert(result.data)
+      }).catch((err) => {
+        alert(err)
+      })
+    },
     fetchData(id) {
       fetchArticle(id).then(response => {
         this.postForm = response.data
@@ -215,22 +230,19 @@ export default {
       document.title = `${title} - ${this.postForm.id}`
     },
     submitForm() {
-      console.log(this.postForm)
-      this.$refs.postForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          this.$notify({
-            title: '成功',
-            message: '发布文章成功',
-            type: 'success',
-            duration: 2000
-          })
-          this.postForm.status = 'published'
-          this.loading = false
-        } else {
-          console.log('error submit!!')
-          return false
-        }
+      const params = new URLSearchParams()
+      params.append('clientID', this.clientID)
+      params.append('org', getOrg())
+      params.append('tokenID', this.tokenID)
+      params.append('targetID', this.accountID)
+      this.$axios({
+        method: 'post',
+        url: '/api/transfer',
+        params
+      }).then((result) => {
+        alert(result.data)
+      }).catch((err) => {
+        alert(err)
       })
     },
     draftForm() {

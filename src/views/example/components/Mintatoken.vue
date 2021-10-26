@@ -13,7 +13,7 @@
           <el-col :span="24">
             <el-form-item style="margin-bottom: 40px;" prop="title">
               <MDinput>
-                Mint a Token
+                使用唯一的tokenID与上传的数字资产铸造属于你的NFT
               </MDinput>
             </el-form-item>
             <div class="postInfo-container">

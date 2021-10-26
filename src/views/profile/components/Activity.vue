@@ -141,9 +141,8 @@ export default {
     color: #666;
 
     .image {
-      width: 100%;
+      width: 120%;
       height: 100%;
-
     }
 
     .user-images {

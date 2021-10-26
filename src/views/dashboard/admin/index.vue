@@ -6,7 +6,7 @@
 
     <el-divider />
     <br>
-    <font size="4">接下来我们将展示Fabric与IPFS结合之后可以在NFT方面发挥怎样的积极作用</font>
+    <font size="4">接下来我们将展示建立在Hyperledger Fabric 与IPFS之上的简单NFT拍卖市场示例</font>
     <br>
     <br>
     <br>
@@ -25,7 +25,7 @@
     </div>
     -->
     <div class="block">
-      <el-carousel interval="4000" type="card" height="660px">
+      <el-carousel interval="4000" type="card" height="500px">
         <el-carousel-item v-for="item in imagebox" :key="item.id">
           <img :src="item.idView" class="image">
         </el-carousel-item>
@@ -122,10 +122,10 @@ export default {
         'https://hx24.huoxing24.com/image/crawler/2021/03/03/1614775891386426.jpg',
         'https://asset.businesslawyers.jp/articles/9d3eaa98d1f5c7bbb3d135b65d2fc43da9baf724.jpg'
       ],
-      imagebox: [{ id: 0, idView: require('/home/quieoo/desktop/fabric/fabric-samples/web/NFTAppOnVue/src/views/dashboard/admin/1.webp') },
-        { id: 1, idView: require('/home/quieoo/desktop/fabric/fabric-samples/web/NFTAppOnVue/src/views/dashboard/admin/2.jpg') },
-        { id: 2, idView: require('/home/quieoo/desktop/fabric/fabric-samples/web/NFTAppOnVue/src/views/dashboard/admin/3.jpg') },
-        { id: 3, idView: require('/home/quieoo/desktop/fabric/fabric-samples/web/NFTAppOnVue/src/views/dashboard/admin/4.png') }
+      imagebox: [{ id: 0, idView: require('@/assets/fabric.png') },
+        { id: 1, idView: require('@/assets/ipfs.jpeg') },
+        { id: 2, idView: require('@/assets/nft.jpg') },
+        { id: 3, idView: require('@/assets/auction.jpg') }
         // imagebox是assets下一个放图片的文件夹
       ],
       screenWidth: 1000

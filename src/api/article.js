@@ -35,6 +35,10 @@ export function getBidIndex() {
 }
 
 export function updataNFTIndex(addIndex, totalnft, callback) {
+  if (totalnft === 0) {
+    callback(-1)
+    return
+  }
   NFTIndex += addIndex
   if (NFTIndex < 0) {
     NFTIndex += totalnft

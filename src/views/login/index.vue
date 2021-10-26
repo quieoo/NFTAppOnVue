@@ -3,7 +3,8 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">欢迎来到IF-NFT,请登录或注册</h3>
+        <h3 class="title">欢迎来到FI-NFT</h3>
+        <h4 class="sub_title">Hyperledger Fabric & IPFS for NFT marketplace</h4>
       </div>
 
       <el-form-item prop="username">
@@ -50,6 +51,9 @@
 
     </el-form>·
 
+    <div class="title-container">
+      <h3 class="info">使用用户名与密码注册/登录Hyperledger Fabric上的唯一账号</h3>
+    </div>
     <el-dialog title="Or connect with" :visible.sync="showDialog">
       Can not be simulated on local, so please combine you own business simulation! ! !
       <br>
@@ -97,7 +101,7 @@ export default {
       capsTooltip: false,
       loading: false,
       showDialog: false,
-      redirect: undefined,
+      redirect: 'dashboard',
       otherQuery: {}
     }
   },
@@ -154,7 +158,7 @@ export default {
         this.loading = true
         this.$store.dispatch('user/login', this.loginForm)
           .then(() => {
-            this.$router.push({ path: this.redirect || '/', query: { token: this.loginForm.username }})
+            this.$router.push({ path: 'dashboard' || '/', query: { token: this.loginForm.username }})
             // this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
             this.loading = false
           })
@@ -178,7 +182,7 @@ export default {
         this.loading = true
         this.$store.dispatch('user/login', this.loginForm)
           .then(() => {
-            this.$router.push({ path: this.redirect || '/', query: { token: this.loginForm.username }})
+            this.$router.push({ path: 'dashboard' || '/', query: { token: this.loginForm.username }})
             // this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
             this.loading = false
           })
@@ -312,7 +316,21 @@ $light_gray:#eee;
     .title {
       font-size: 26px;
       color: $light_gray;
-      margin: 0px auto 40px auto;
+      margin: 0px auto 10px auto;
+      text-align: center;
+      font-weight: bold;
+    }
+    .sub_title{
+      font-size: 26px;
+      color: $light_gray;
+      margin: 00px auto 40px auto;
+      text-align: center;
+      font-weight: bold;
+    }
+    .info{
+      font-size: 15px;
+      color: $light_gray;
+      margin: 00px auto 40px auto;
       text-align: center;
       font-weight: bold;
     }

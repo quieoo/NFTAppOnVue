@@ -1,5 +1,10 @@
 <template>
   <div class="auction-container">
+    <el-row>
+      <el-col :span="1" :offset="23">
+        <el-button v-loading="loading" type="info" @click="showClient">@{{ clientID }}</el-button>
+      </el-col>
+    </el-row>
     <h1>拍卖市场</h1>
     <h3>NFT商品总数：{{ totalBids }}</h3>
     <el-divider />
@@ -25,19 +30,15 @@
             <el-table :data="tableData" style="width: 70%;margin-top:15px;">
               <el-table-column
                 prop="tokenID"
-                label="商品号"
+                label="tokenID"
               />
               <el-table-column
                 prop="cp"
-                label="当前价格"
+                label="当前最高价格"
               />
               <el-table-column
                 prop="kp"
                 label="秒杀价格"
-              />
-              <el-table-column
-                prop="co"
-                label="出价者"
               />
               <el-table-column
                 prop="lt"
@@ -47,6 +48,19 @@
           </div>
         </el-col>
       </el-row>
+      <el-row gutter="15">
+        <el-col :span="10" :offset="9">
+          <div class="grid-content bg-purple">
+            <el-table :data="tableData" style="width: 70%;margin-top:15px;">
+              <el-table-column
+                prop="co"
+                label="当前最高出价者"
+              />
+            </el-table>
+          </div>
+        </el-col>
+      </el-row>
+
     </div>
     <div class="bid-container">
       <el-row gutter="15">
@@ -99,7 +113,7 @@ export default {
       },
       // 图片展示格式与数据源
       fits: ['contain'],
-      image_url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+      image_url: require('@/assets/loading.jpg'),
       // 当前竞价与秒杀价表格数据源
       tableData: [
         { tokenID: '', cp: '', co: '', kp: '', lt: '' }
@@ -119,7 +133,7 @@ export default {
     showBids(index) {
       if (index === -1) {
         alert('无在拍NFT')
-        this.image_url = 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
+        this.image_url = require('@/assets/loading.jpg')
         Vue.set(this.tableData, 0, { tokenID: '', cp: '', co: '', kp: '', lt: '' })
       } else {
         const params = new URLSearchParams()
@@ -155,7 +169,9 @@ export default {
         params
       }).then((result) => {
         this.totalBids = result.data
-        callback(result.data)
+        if (typeof callback === 'function') {
+          callback(result.data)
+        }
       }).catch((err) => {
         alert(err)
       })
@@ -197,8 +213,21 @@ export default {
           this.showBids(newBidIndex)
         })
       })
+    },
+    showClient() {
+      const params = new URLSearchParams()
+      params.append('clientID', this.clientID)
+      params.append('org', getOrg())
+      this.$axios({
+        method: 'post',
+        url: '/api/account',
+        params
+      }).then((result) => {
+        alert(result.data)
+      }).catch((err) => {
+        alert(err)
+      })
     }
-
   }
 
 }

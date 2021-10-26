@@ -30,11 +30,11 @@
             <el-table :data="tableData" style="width: 70%;margin-top:15px;">
               <el-table-column
                 prop="tokenID"
-                label="NFTID"
+                label="tokenID"
               />
               <el-table-column
                 prop="cid"
-                label="CID"
+                label="资产标识"
               />
               <el-table-column
                 prop="status"
@@ -82,7 +82,7 @@ export default {
       postForm: Object.assign({}, defaultForm),
       // 图片展示格式及图片源
       fits: ['contain'],
-      image_url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+      image_url: require('@/assets/loading.jpg'),
       // 上架状态及价格信息表
       tableData: [{
         tokenID: '',
@@ -139,18 +139,20 @@ export default {
     },
     // 上一页下一页
     page1() {
-      this.getTotalNFTs()
-      updataNFTIndex(-1, this.totalNFTs, nftIndex => {
-        this.showNFT(nftIndex)
+      this.getTotalNFTs((totalnfts) => {
+        updataNFTIndex(-1, totalnfts, nftIndex => {
+          this.showNFT(nftIndex)
+        })
       })
     },
     page2() {
-      this.getTotalNFTs()
-      updataNFTIndex(1, this.totalNFTs, nftIndex => {
-        this.showNFT(nftIndex)
+      this.getTotalNFTs((totalnfts) => {
+        updataNFTIndex(1, totalnfts, nftIndex => {
+          this.showNFT(nftIndex)
+        })
       })
     },
-    getTotalNFTs() {
+    getTotalNFTs(callback) {
       const params = new URLSearchParams()
       params.append('clientID', this.clientID)
       params.append('org', this.org)
@@ -160,6 +162,9 @@ export default {
         params
       }).then((result) => {
         this.totalNFTs = result.data
+        if (typeof callback === 'function') {
+          callback(result.data)
+        }
       }).catch((err) => {
         alert(err)
       })
@@ -179,23 +184,29 @@ export default {
       })
     },
     showNFT(index) {
-      const params = new URLSearchParams()
-      params.append('clientID', this.clientID)
-      params.append('org', this.org)
-      params.append('index', index.toString())
-      this.$axios({
-        method: 'post',
-        url: 'api/getNFTByIndex',
-        params
-      }).then((result) => {
-        const _tokenID = result.data.tokenID
-        tokenID = _tokenID
-        this.image_url = '/api/uploads/' + _tokenID + '.png'
-        const _cid = result.data.CID
-        Vue.set(this.tableData, 0, { cid: _cid, tokenID: _tokenID, status: result.data.Status })
-      }).catch((err) => {
-        alert(err)
-      })
+      if (index === -1) {
+        alert('无NFT')
+        this.image_url = require('@/assets/loading.jpg')
+        Vue.set(this.tableData, 0, { tokenID: '', cid: '', status: '' })
+      } else {
+        const params = new URLSearchParams()
+        params.append('clientID', this.clientID)
+        params.append('org', this.org)
+        params.append('index', index.toString())
+        this.$axios({
+          method: 'post',
+          url: 'api/getNFTByIndex',
+          params
+        }).then((result) => {
+          const _tokenID = result.data.tokenID
+          tokenID = _tokenID
+          this.image_url = '/api/uploads/' + _tokenID + '.png'
+          const _cid = result.data.CID
+          Vue.set(this.tableData, 0, { cid: _cid, tokenID: _tokenID, status: result.data.Status })
+        }).catch((err) => {
+          alert(err)
+        })
+      }
     },
     addBid(lp, hp, lt) {
       const params = new URLSearchParams()

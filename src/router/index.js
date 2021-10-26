@@ -70,7 +70,7 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'Mainpage', icon: 'dashboard', affix: true }
+        meta: { title: '主页', icon: 'dashboard', affix: true }
       }
     ]
   }
@@ -94,7 +94,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/example/list',
     name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    meta: { title: '操作', icon: 'el-icon-s-help' },
     children: [
 
       {
@@ -108,31 +108,13 @@ export const asyncRoutes = [
         path: 'mint',
         component: () => import('@/views/example/mint'),
         name: 'MintaToken',
-        meta: { title: 'Mint a Token', icon: 'edit' }
-      },
-      {
-        path: 'transfer',
-        component: () => import('@/views/example/transfer'),
-        name: 'TransferToken',
-        meta: { title: 'Transfer a Token', icon: 'edit' }
-      },
-      {
-        path: 'query',
-        component: () => import('@/views/example/query'),
-        name: 'QueryToken',
-        meta: { title: 'Query Token', icon: 'edit' }
-      },
-      {
-        path: 'request',
-        component: () => import('@/views/example/request'),
-        name: 'CreateArticle',
-        meta: { title: 'Request a Token', icon: 'edit' }
+        meta: { title: '铸造NFT', icon: 'edit' }
       },
       {
         path: 'auction',
         component: () => import('@/views/example/auction'),
         name: 'Auction',
-        meta: { title: 'Auction try', icon: 'edit' }
+        meta: { title: '拍卖市场', icon: 'edit' }
       },
       {
         path: 'publish',

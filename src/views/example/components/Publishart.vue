@@ -40,6 +40,10 @@
                 prop="status"
                 label="在拍"
               />
+              <el-table-column
+                prop="filetype"
+                label="文件类型"
+              />
             </el-table>
           </div>
         </el-col>
@@ -87,7 +91,8 @@ export default {
       tableData: [{
         tokenID: '',
         cid: '',
-        status: ''
+        status: '',
+        filetype: ''
       }],
       totalNFTs: 0,
       clientID: getClientID(),
@@ -199,10 +204,11 @@ export default {
           params
         }).then((result) => {
           const _tokenID = result.data.tokenID
+          const _type = result.data.FileType
           tokenID = _tokenID
-          this.image_url = '/api/uploads/' + _tokenID + '.png'
+          this.image_url = '/api/uploads/' + _tokenID + '.' + _type
           const _cid = result.data.CID
-          Vue.set(this.tableData, 0, { cid: _cid, tokenID: _tokenID, status: result.data.Status })
+          Vue.set(this.tableData, 0, { cid: _cid, tokenID: _tokenID, status: result.data.Status, filetype: result.data.FileType })
         }).catch((err) => {
           alert(err)
         })

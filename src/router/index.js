@@ -121,6 +121,12 @@ export const asyncRoutes = [
         component: () => import('@/views/example/pub'),
         name: 'CreateArticle',
         meta: { title: '我的资产', icon: 'edit' }
+      },
+      {
+        path: 'VideoCheck',
+        component: () => import('@/views/example/VideoCheck'),
+        name: 'CreateArticle',
+        meta: { title: 'check video in ipfs', icon: 'edit' }
       }
 
     ]
